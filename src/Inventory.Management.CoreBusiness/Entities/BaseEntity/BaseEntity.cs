@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Inventory.Management.CoreBusiness.Enums;
 
 namespace Inventory.Management.CoreBusiness.Entities.BaseEntity
 {
