@@ -1,19 +1,14 @@
-using System.ComponentModel.DataAnnotations;
-using Inventory.Management.CoreBusiness.Enums;
 using Inventory.Management.UseCases.Dtos.BaseDto.Contracts;
+using Inventory.Management.UseCases.Dtos.Enums;
 
 namespace Inventory.Management.UseCases.Dtos.BaseDto
 {
     public class BaseDto<T> : IDto
     {
-        [Required]
         public T Id { get; set; }
-        [Required]
-        public Status Status { get; set; } = Status.Active;
-        [Required]
+        public StatusDto Status { get; set; } = StatusDto.Active;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime? ModifiedAt { get; set; }
-        [Required]
         public T CreatedBy { get; set; }
         public T? ModifiedBy { get; set; }
 

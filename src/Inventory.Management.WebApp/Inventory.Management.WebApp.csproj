@@ -3,7 +3,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Inventory.Management.UseCases\Inventory.Management.UseCases.csproj" />
     <ProjectReference Include="..\Inventory.Management.Plugins\Inventory.Management.Plugins.csproj" />
-    <ProjectReference Include="..\Inventory.Management.CoreBusiness\Inventory.Management.CoreBusiness.csproj" />
   </ItemGroup>
 
   <ItemGroup>

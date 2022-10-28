@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Inventory.Management.CoreBusiness.Entities;
 using Inventory.Management.UseCases.Dtos;
 
@@ -16,7 +12,7 @@ namespace Inventory.Management.UseCases.Extensions
                 Id = category.Id,
                 Name = category.Name,
                 Description = category.Description,
-                Status = category.Status,
+                Status = (Dtos.Enums.StatusDto)category.Status,
                 CreatedAt = category.CreatedAt,
                 ModifiedAt = category.ModifiedAt,
                 CreatedBy = category.CreatedBy,
@@ -31,7 +27,7 @@ namespace Inventory.Management.UseCases.Extensions
                 Id = categoryDto.Id,
                 Name = categoryDto.Name,
                 Description = categoryDto.Description,
-                Status = categoryDto.Status,
+                Status = (CoreBusiness.Enums.Status)categoryDto.Status,
                 CreatedAt = categoryDto.CreatedAt,
                 ModifiedAt = categoryDto.ModifiedAt,
                 CreatedBy = categoryDto.CreatedBy,
