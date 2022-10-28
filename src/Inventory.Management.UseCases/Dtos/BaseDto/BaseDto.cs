@@ -1,34 +1,35 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 using Inventory.Management.CoreBusiness.Enums;
-using Inventory.Management.CoreBusiness.Entities.BaseEntity.Contracts;
+using Inventory.Management.UseCases.Dtos.BaseDto.Contracts;
 
-namespace Inventory.Management.CoreBusiness.Entities.BaseEntity
+namespace Inventory.Management.UseCases.Dtos.BaseDto
 {
-    public abstract class BaseEntity<T> : IEntity
+    public class BaseDto<T> : IDto
     {
+        [Required]
         public T Id { get; set; }
+        [Required]
         public Status Status { get; set; } = Status.Active;
+        [Required]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime? ModifiedAt { get; set; }
+        [Required]
         public T CreatedBy { get; set; }
         public T? ModifiedBy { get; set; }
 
-        object IEntity.Id
+        object IDto.Id
         {
             get { return Id; }
             set {  }
         }
 
-        object IEntity.CreatedBy
+        object IDto.CreatedBy
         {
             get { return CreatedBy; }
             set { }
         }
 
-        object IEntity.ModifiedBy
+        object IDto.ModifiedBy
         {
             get { return ModifiedBy; }
             set { }

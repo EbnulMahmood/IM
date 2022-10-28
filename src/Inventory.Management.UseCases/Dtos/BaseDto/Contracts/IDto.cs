@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Inventory.Management.CoreBusiness.Enums;
 
-namespace Inventory.Management.CoreBusiness.Entities.BaseEntity.Contracts
+namespace Inventory.Management.UseCases.Dtos.BaseDto.Contracts
 {
-    public interface IEntity
+    public interface IDto
     {
         object Id { get; set; }
         Status Status { get; set; }
