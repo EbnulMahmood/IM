@@ -1,7 +1,18 @@
+using Inventory.Management.Plugins.InMemory.Repositories;
+using Inventory.Management.UseCases.Categories;
+using Inventory.Management.UseCases.Categories.Contracts;
+using Inventory.Management.UseCases.PluginInterfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Add repositories
+builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
+
+// Add usecases
+builder.Services.AddTransient<IViewCategoriesUseCase, ViewCategoriesUseCase>();
 
 var app = builder.Build();
 

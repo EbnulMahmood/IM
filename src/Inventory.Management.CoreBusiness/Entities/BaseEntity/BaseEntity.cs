@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Inventory.Management.CoreBusiness.Enums;
+using Inventory.Management.CoreBusiness.Entities.BaseEntity.Contracts;
 
 namespace Inventory.Management.CoreBusiness.Entities.BaseEntity
 {
