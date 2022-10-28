@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using IM.CoreBusiness.Enums;
 
 namespace IM.CoreBusiness.Entities.BaseEntity.Contracts
