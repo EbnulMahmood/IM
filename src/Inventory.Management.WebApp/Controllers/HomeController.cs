@@ -1,21 +1,27 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Inventory.Management.WebApp.Models;
+using Inventory.Management.UseCases.Categories.Contracts;
 
 namespace Inventory.Management.WebApp.Controllers;
 
 public class HomeController : Controller
 {
+    private readonly IViewCategoriesUseCase _viewCategoriesUseCase;
     private readonly ILogger<HomeController> _logger;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(IViewCategoriesUseCase viewCategoriesUseCase,
+        ILogger<HomeController> logger)
     {
+        _viewCategoriesUseCase = viewCategoriesUseCase;
         _logger = logger;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var entities = await _viewCategoriesUseCase.ExecuteAsync();
+        Console.WriteLine(entities.Count());
+        return View(entities);
     }
 
     public IActionResult Privacy()

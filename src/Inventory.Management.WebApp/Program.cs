@@ -1,12 +1,19 @@
-using Inventory.Management.Plugins.InMemory.Repositories;
+using Inventory.Management.Plugins.EFCore.Data;
+using Inventory.Management.Plugins.EFCore.Repositories;
 using Inventory.Management.UseCases.Categories;
 using Inventory.Management.UseCases.Categories.Contracts;
 using Inventory.Management.UseCases.PluginInterfaces;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<InventoryDbContext>(options =>
+{
+    options.UseInMemoryDatabase("InventoryDb");
+});
 
 // Add repositories
 builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
@@ -15,6 +22,12 @@ builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
 builder.Services.AddTransient<IViewCategoriesUseCase, ViewCategoriesUseCase>();
 
 var app = builder.Build();
+
+// create database
+var scope = app.Services.CreateScope();
+var inventoryDbContext = scope.ServiceProvider.GetRequiredService<InventoryDbContext>();
+inventoryDbContext.Database.EnsureDeleted();
+inventoryDbContext.Database.EnsureCreated();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
