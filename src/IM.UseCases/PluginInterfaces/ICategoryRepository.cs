@@ -6,8 +6,9 @@ namespace IM.UseCases.PluginInterfaces
     {
         Task<IEnumerable<Category>> ListCategoriesAsync();
         Task<Category> GetCategoryByIdAsync(Guid? id);
-        Task<Category> CreateCategoryAsync(Category entityToCreate);
-        Task<Category> UpdateCategoryAsync(Category entityToUpdate);
+        Task<bool> CreateCategoryAsync(Category entityToCreate);
+        Task<bool> UpdateCategoryAsync(Category entityToUpdate);
         Task<bool> DeleteCategoryByIdAsync(Guid id);
+        Task SaveAsync();
     }
 }
