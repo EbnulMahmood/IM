@@ -7,16 +7,16 @@ namespace IM.UseCases.Categories
 {
     public class ViewCategoriesUseCase : IViewCategoriesUseCase
     {
-        private readonly ICategoryRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ViewCategoriesUseCase(ICategoryRepository repository)
+        public ViewCategoriesUseCase(IUnitOfWork unitOfWork)
         {
-            _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<IEnumerable<CategoryDto>> ExecuteAsync()
         {
-            var entities = await _repository.ListCategoriesAsync();
+            var entities = await _unitOfWork.CategoryRepository.ListEntitiesAsync();
 
             var entitiesDto = entities.ConvertToDto();
             return entitiesDto;
