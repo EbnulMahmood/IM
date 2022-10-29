@@ -3,7 +3,7 @@ using IM.Plugins.EFCore.Data;
 using IM.UseCases.PluginInterfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-
+ 
 namespace IM.Plugins.EFCore.Repositories
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class

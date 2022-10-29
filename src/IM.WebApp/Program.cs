@@ -17,6 +17,7 @@ builder.Services.AddDbContext<InventoryDbContext>(options =>
 
 // Add repositories
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+// builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
 
 // Add usecases
 builder.Services.AddTransient<IViewCategoriesUseCase, ViewCategoriesUseCase>();
