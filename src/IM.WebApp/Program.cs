@@ -1,8 +1,8 @@
 using IM.Plugins.EFCore.Data;
 using IM.Plugins.EFCore.Repositories;
-using IM.UseCases.Categories;
-using IM.UseCases.Categories.Contracts;
-using IM.UseCases.PluginInterfaces;
+using IM.UseCases.PluginIRepositories;
+using IM.UseCases.Services;
+using IM.UseCases.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,10 +17,9 @@ builder.Services.AddDbContext<InventoryDbContext>(options =>
 
 // Add repositories
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
-// builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
 
-// Add usecases
-builder.Services.AddTransient<IViewCategoriesUseCase, ViewCategoriesUseCase>();
+// Add Services
+builder.Services.AddTransient<ICategoryService, CategoryService>();
 
 var app = builder.Build();
 

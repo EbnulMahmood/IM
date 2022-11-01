@@ -1,26 +1,21 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using IM.WebApp.Models;
-using IM.UseCases.Categories.Contracts;
 
 namespace IM.WebApp.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly IViewCategoriesUseCase _viewCategoriesUseCase;
     private readonly ILogger<HomeController> _logger;
 
-    public HomeController(IViewCategoriesUseCase viewCategoriesUseCase,
-        ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger)
     {
-        _viewCategoriesUseCase = viewCategoriesUseCase;
         _logger = logger;
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
-        var entities = await _viewCategoriesUseCase.ExecuteAsync();
-        return View(entities);
+        return View();
     }
 
     public IActionResult Privacy()

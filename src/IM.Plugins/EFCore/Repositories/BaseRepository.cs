@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 using IM.Plugins.EFCore.Data;
-using IM.UseCases.PluginInterfaces;
+using IM.UseCases.PluginIRepositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
  

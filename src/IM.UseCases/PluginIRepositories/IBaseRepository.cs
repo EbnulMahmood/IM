@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace IM.UseCases.PluginInterfaces
+namespace IM.UseCases.PluginIRepositories
 {
     public interface IBaseRepository<TEntity> where TEntity : class
     {

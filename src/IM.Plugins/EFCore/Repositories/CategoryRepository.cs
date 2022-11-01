@@ -1,6 +1,6 @@
 using IM.CoreBusiness.Entities;
 using IM.Plugins.EFCore.Data;
-using IM.UseCases.PluginInterfaces;
+using IM.UseCases.PluginIRepositories;
 using Microsoft.Extensions.Logging;
 
 namespace IM.Plugins.EFCore.Repositories

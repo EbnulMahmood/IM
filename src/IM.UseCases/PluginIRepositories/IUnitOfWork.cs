@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace IM.UseCases.PluginInterfaces
+namespace IM.UseCases.PluginIRepositories
 {
     public interface IUnitOfWork
     {

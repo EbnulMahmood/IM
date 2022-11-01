@@ -1,6 +1,6 @@
 using IM.CoreBusiness.Entities;
 
-namespace IM.UseCases.PluginInterfaces
+namespace IM.UseCases.PluginIRepositories
 {
     public interface ICategoryRepository : IBaseRepository<Category>
     {

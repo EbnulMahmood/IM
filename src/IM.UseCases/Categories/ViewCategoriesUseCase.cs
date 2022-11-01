@@ -1,7 +1,7 @@
 using IM.UseCases.Categories.Contracts;
 using IM.UseCases.Dtos;
 using IM.UseCases.Extensions;
-using IM.UseCases.PluginInterfaces;
+using IM.UseCases.PluginIRepositories;
 
 namespace IM.UseCases.Categories
 {
