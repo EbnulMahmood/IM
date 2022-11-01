@@ -142,7 +142,11 @@ namespace IM.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CategoryDto entityDto)
         {
+            // IDictionary<string, string> errors = _service.ValidateCategoryDtoService(entityDto);
+            // if (errors.Count > 0) ModelState.Merge(errors);
+
             if (!ModelState.IsValid) return View(entityDto);
+            _service.ValidateCategoryDtoService(entityDto);
             if (!await _service.CreateCategoryServiceAsync(entityDto)) return View(entityDto);
             TempData["success"] = "Category created successfully!";
             return RedirectToAction(nameof(Index));

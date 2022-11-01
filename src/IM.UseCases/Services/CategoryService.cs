@@ -84,6 +84,9 @@ namespace IM.UseCases.Services
             {
                 var entity = entityDtoToUpdate.ConvertToEntity();
 
+                entity.ModifiedAt = DateTime.Now;
+                entity.ModifiedBy = Guid.NewGuid();
+
                 if (!_unitOfWork.CategoryRepository.UpdateEntity(entity)) throw new Exception();
 
                 return await _unitOfWork.SaveAsync();

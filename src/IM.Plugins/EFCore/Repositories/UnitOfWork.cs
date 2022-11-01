@@ -23,20 +23,20 @@ namespace IM.Plugins.EFCore.Repositories
         public async Task<bool> SaveAsync()
         {
             bool returnValue = true;
-            using (var dbContextTransaction = _context.Database.BeginTransaction())
-            {
+            // using (var dbContextTransaction = _context.Database.BeginTransaction())
+            // {
                 try
                 {
                     await _context.SaveChangesAsync();
-                    dbContextTransaction.Commit();
+                    // dbContextTransaction.Commit();
                 }
                 catch (Exception)
                 {
                     //Log Exception Handling message                      
                     returnValue = false;
-                    dbContextTransaction.Rollback();
+                    // dbContextTransaction.Rollback();
                 }
-            }
+            // }
             return returnValue;
         }
 
