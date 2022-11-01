@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IM.WebApp.Controllers
 {
+    [Route("[controller]")]
     public class CategoryController : Controller
     {
         private readonly ILogger<CategoryController> _logger;
@@ -22,7 +23,7 @@ namespace IM.WebApp.Controllers
             return View();
         }
 
-        [HttpPost, ActionName("Index")]
+        [HttpPost]
         public async Task<JsonResult> ListCategoriesAsync(int draw, int start, int length,
             string filter_keywords, StatusDto filter_option = 0)
         {
