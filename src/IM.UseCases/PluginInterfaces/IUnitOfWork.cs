@@ -10,6 +10,6 @@ namespace IM.UseCases.PluginInterfaces
         ICategoryRepository CategoryRepository { get; }
 
         void Dispose();
-        Task SaveAsync();
+        Task<bool> SaveAsync();
     }
 }

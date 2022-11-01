@@ -6,7 +6,7 @@ namespace IM.Plugins.EFCore.Repositories
 {
     public class UnitOfWork : IDisposable, IUnitOfWork
     {
-        private bool disposed = false;
+        private bool _disposed = false;
         private readonly InventoryDbContext _context;
         private readonly ILogger _logger;
 
@@ -20,21 +20,36 @@ namespace IM.Plugins.EFCore.Repositories
             CategoryRepository = new CategoryRepository(context, _logger);
         }
 
-        public async Task SaveAsync()
+        public async Task<bool> SaveAsync()
         {
-            await _context.SaveChangesAsync();
+            bool returnValue = true;
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    dbContextTransaction.Commit();
+                }
+                catch (Exception)
+                {
+                    //Log Exception Handling message                      
+                    returnValue = false;
+                    dbContextTransaction.Rollback();
+                }
+            }
+            return returnValue;
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
                     _context.Dispose();
                 }
             }
-            this.disposed = true;
+            _disposed = true;
         }
 
         public void Dispose()
