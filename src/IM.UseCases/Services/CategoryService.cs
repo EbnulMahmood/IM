@@ -44,7 +44,7 @@ namespace IM.UseCases.Services
             }
         }
 
-        public async Task<CategoryDto> GetCategoryByIdServiceAsync(long? entityDtoToGetId)
+        public async Task<CategoryDto> GetCategoryByIdServiceAsync(Guid? entityDtoToGetId)
         {
             try
             {
@@ -95,7 +95,7 @@ namespace IM.UseCases.Services
             }
         }
 
-        public async Task<bool> DeleteCategoryByIdServiceAsync(long entityDtoToDeleteId)
+        public async Task<bool> DeleteCategoryByIdServiceAsync(Guid entityDtoToDeleteId)
         {
             try
             {
