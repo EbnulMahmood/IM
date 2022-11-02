@@ -40,9 +40,9 @@
     </div>
     <br>
     <div class="table-responsive">
-        <table id="categoryDatatable" class="table table-condensed table-striped">
+        <table id="categoryDatatable" class="table w-auto table-striped">
             <thead>
-                <tr>
+                <tr class="d-flex">
                     <th>Name</th>
                     <th>Status</th>
                     <th>Action</th>
@@ -77,6 +77,12 @@
                                 "filter_option": $("#sort-by").val().toLowerCase(),
                             })
                         }
+                    },
+                    createdRow: (row, data, dataIndex) => {
+                        $(row).addClass( 'd-flex justify-content-end' );
+                        console.log('row-> ', row)
+                        console.log('data-> ', data)
+                        console.log('dataIndex-> ', dataIndex)
                     },
                 });
                 customDataTable.draw();
