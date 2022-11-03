@@ -27,11 +27,11 @@
     <br>
     <br>
     <div class="row">
-        <div class="col-md-3">
-            <input class="form-control" type="text" id="search-input" placeholder="Search Name" />
+        <div class="col-md-3 p-3">
+            <input class="form-control" type="text" id="search-by-name" placeholder="Search Name" />
         </div>
-        <div class="col-md-3">
-            <select class="form-control" id="sort-by">
+        <div class="col-md-3 p-3">
+            <select class="form-control" id="filter-by-status">
                 <option selected value="">Select Status</option>
                 <option value="@StatusDto.Active">Active</option>
                 <option value="@StatusDto.Inactive">Inactive</option>
@@ -40,12 +40,12 @@
     </div>
     <br>
     <div class="table-responsive">
-        <table id="categoryDatatable" class="table w-auto table-striped">
+        <table id="categoryDatatable" class="table table-striped">
             <thead>
-                <tr class="d-flex">
-                    <th>Name</th>
-                    <th>Status</th>
-                    <th>Action</th>
+                <tr>
+                    <th class="w-50">Name</th>
+                    <th class="w-25">Status</th>
+                    <th class="w-25">Action</th>
                 </tr>
             </thead>
         </table>
@@ -53,43 +53,27 @@
 </div>
 
 @section Scripts {
+    <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="~/js/datatable.js" asp-append-version="true"></script>
+    
     <script>
-        // DataTable
-        $(document).ready(function () {
-            const categoryDataTable = (tableId, url) => {
-                const customDataTable = $(tableId).DataTable({
-                    processing: true,
-                    bServerSide: true,
-                    serverSide: true,
-                    sort: true,
-                    searching: false,
-                    columnDefs: [
-                        { orderable: false, targets: -1 }
-                    ],
-                    dom: '<"top"l>rt<"bottom"ip><"clear">',
-                    ajax: {
-                        url: url,
-                        type: "POST",
-                        dataType: "json",
-                        data: (data) => {
-                            return $.extend({}, data, {
-                                "filter_keywords": $("#search-input").val().toLowerCase(),
-                                "filter_option": $("#sort-by").val().toLowerCase(),
-                            })
-                        }
-                    },
-                    createdRow: (row, data, dataIndex) => {
-                        $(row).addClass( 'd-flex justify-content-end' );
-                        console.log('row-> ', row)
-                        console.log('data-> ', data)
-                        console.log('dataIndex-> ', dataIndex)
-                    },
-                });
-                customDataTable.draw();
-                $("#search-input, #sort-by").bind("keyup change clear", () => customDataTable.draw());
+        const filterSearchOptionsForCategory = () => {
+            return {
+                searchByName: "#search-by-name",
+                filterByStatus: "#filter-by-status",
             }
-            categoryDataTable('#categoryDatatable', "Category/Index");
+        }
+        const categoryDatatableId = '#categoryDatatable';
+        const categoryIndexUrl = 'Category/Index';
+
+        $(document).ready(function () {
+            
+            DataTable(categoryDatatableId, categoryIndexUrl,
+                filterSearchOptionsForCategory);
         });
+    </script>
+
+    <script>
         // modal
         const showModal = (url, PlaceHolderElement) => {
             const decodeUrl = decodeURIComponent(url);
@@ -102,7 +86,6 @@
             const form = that.parents('.modal').find('form');
             const actionUrl = form.attr('action');
             const sendData = form.serialize();
-            console.log(actionUrl, sendData)
             $.post(actionUrl, sendData).done(function (data) {
                 PlaceHolderElement.find('.modal').modal('hide');
                 window.location.reload();

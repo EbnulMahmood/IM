@@ -24,44 +24,23 @@ namespace IM.WebApp.Controllers
 
         [HttpPost, ActionName("Index")]
         public async Task<JsonResult> ListCategoriesAsync(int draw, int start, int length,
-            string filter_keywords, StatusDto filter_option = 0)
+            string searchByName, StatusDto filterByStatus = 0)
         {
-            var entities = await _service.ListCategoriesServiceAsync();
-            int totalRecord = 0;
-            int filterRecord = 0;
-
             string order = Request.Form["order[0][column]"][0];
             string orderDir = Request.Form["order[0][dir]"][0];
 
-            //get total count of data in table
-            totalRecord = entities.Count();
+            var listCategoriesTuple = await _service.ListCategoriesWithSortingFilteringPagingServiceAsync(start, length, order, orderDir,
+                searchByName, filterByStatus);
 
-            if (!string.IsNullOrEmpty(filter_keywords))
-            {
-                entities = entities.Where(d => d.Name.ToLower().Contains(filter_keywords.ToLower()))
-                .Where(d => d.Status != StatusDto.Deleted);
-            }
-            if (filter_option != 0)
-            {
-                entities = entities.Where(d => d.Status == filter_option)
-                .Where(d => d.Status != StatusDto.Deleted);
-            }
+            IEnumerable<CategoryDto> listCategories = listCategoriesTuple.Item1;
 
-            // Sorting.   
-            entities = SortByColumnWithOrder(order, orderDir, entities);
-
-            // get total count of records after search 
-            filterRecord = entities.Count();
-
-            //pagination
-            IEnumerable<CategoryDto> paginatdEntities = entities.Skip(start).Take(length)
-                .OrderByDescending(d => d.CreatedAt).ToList()
-                .Where(d => d.Status != StatusDto.Deleted);
+            int totalRecord = listCategoriesTuple.Item2;
+            int filterRecord = listCategoriesTuple.Item3;
 
             List<object> entitiesList = new List<object>();
-            foreach (var item in paginatdEntities)
+            foreach (var item in listCategories)
             {
-                string actionLink = $"<div class='w-75 btn-group' role='group'>" +
+                string actionLink = $"<div class='w-25 btn-group' role='group'>" +
                     $"<a href='Edit/{item.Id}' class='btn btn-primary mx-2'><i class='bi bi-pencil-square'></i>Edit</a>" +
                     $"<button type='button' data-bs-target='#deleteCategory' data-bs-toggle='ajax-modal' class='btn btn-danger mx-2 btn-category-delete'" +
                     $"data-category-id='{item.Id}'><i class='bi bi-trash-fill'></i>Delete</button><a href='Details/{item.Id}'" +

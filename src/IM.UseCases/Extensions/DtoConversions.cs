@@ -1,5 +1,7 @@
 using IM.CoreBusiness.Entities;
+using IM.CoreBusiness.Enums;
 using IM.UseCases.Dtos;
+using IM.UseCases.Dtos.Enums;
 
 namespace IM.UseCases.Extensions
 {
@@ -12,7 +14,7 @@ namespace IM.UseCases.Extensions
                 Id = category.Id,
                 Name = category.Name,
                 Description = category.Description,
-                Status = (Dtos.Enums.StatusDto)category.Status,
+                Status = (StatusDto)category.Status,
                 CreatedAt = category.CreatedAt,
                 ModifiedAt = category.ModifiedAt,
                 CreatedBy = category.CreatedBy,
@@ -27,7 +29,7 @@ namespace IM.UseCases.Extensions
                 Id = categoryDto.Id,
                 Name = categoryDto.Name,
                 Description = categoryDto.Description,
-                Status = (CoreBusiness.Enums.Status)categoryDto.Status,
+                Status = (Status)categoryDto.Status,
                 CreatedAt = categoryDto.CreatedAt,
                 ModifiedAt = categoryDto.ModifiedAt,
                 CreatedBy = categoryDto.CreatedBy,
@@ -38,7 +40,12 @@ namespace IM.UseCases.Extensions
         public static IEnumerable<CategoryDto> ConvertToDto(this IEnumerable<Category> categories)
         {
             return (from category in categories
-                    select NewCategoryDto(category)).ToList();
+                    select new CategoryDto
+            {
+                Id = category.Id,
+                Name = category.Name,
+                Status = (StatusDto)category.Status,
+            }).ToList();
         }
 
         public static CategoryDto ConvertToDto(this Category category)

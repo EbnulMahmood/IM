@@ -1,4 +1,6 @@
+using IM.CoreBusiness.Enums;
 using IM.UseCases.Dtos;
+using IM.UseCases.Dtos.Enums;
 using IM.UseCases.Extensions;
 using IM.UseCases.PluginIRepositories;
 using IM.UseCases.Services.Contracts;
@@ -27,15 +29,19 @@ namespace IM.UseCases.Services
             return errors;
         }
 
-        public async Task<IEnumerable<CategoryDto>> ListCategoriesServiceAsync()
+        public async Task<(IEnumerable<CategoryDto>, int, int)> ListCategoriesWithSortingFilteringPagingServiceAsync(int start, int length,
+            string order, string orderDir, string searchByName, StatusDto filterByStatusDto = 0)
         {
             try
             {
-                var entities = await _unitOfWork.CategoryRepository.ListEntitiesAsync();
-                if (!entities.Any()) return Enumerable.Empty<CategoryDto>();
+                var listCategoriesTuple = await _unitOfWork.CategoryRepository.ListCategoriesWithSortingFilteringPagingAsync(start, length, order, orderDir,
+                    searchByName, (Status)filterByStatusDto);
 
-                var entitiesDto = entities.ConvertToDto();
-                return entitiesDto;
+                var listCategoriesDto = listCategoriesTuple.Item1.ConvertToDto();
+                int totalRecord = listCategoriesTuple.Item2;
+                int filterRecord = listCategoriesTuple.Item3;
+
+                return (listCategoriesDto, totalRecord, filterRecord);
             }
             catch (Exception)
             {
