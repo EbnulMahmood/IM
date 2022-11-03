@@ -20,32 +20,66 @@ namespace IM.Plugins.EFCore.Repositories
         }
 
         // search by name
-        private async Task<IEnumerable<Category>> SearchCategoriesByName(string name)
+        private async Task<(IEnumerable<Category>, int)> SearchCategoriesByName(string name, int start, int length)
         {
-            return (await _context.Categories
+            var recordCount = await _context.Categories
+                .CountAsync(x => (x.Status != Status.Deleted) &&
+                    (x.Name.ToLower().Contains(name.ToLower()))
+                );
+
+            return ((await _context.Categories
                     .Where(x => x.Name.ToLower().Contains(name.ToLower()))
                     .Where(x => x.Status != Status.Deleted)
+                    .Skip(start).Take(length)
                     .ToListAsync())
                     .Select(c => new Category()
                     {
                         Id = c.Id,
                         Name = c.Name,
                         Status = c.Status,
-                    });
+                    }), recordCount);
         }
 
         // filter by status
-        private async Task<IEnumerable<Category>> FilterCategoriesByStatus(Status status)
+        private async Task<(IEnumerable<Category>, int)> FilterCategoriesByStatus(Status status, int start, int length)
         {
-            return (await _context.Categories.Where(x => x.Status == status)
+            var recordCount = await _context.Categories
+                .CountAsync(x => (x.Status != Status.Deleted) &&
+                    (x.Status == status)
+                );
+            
+            return ((await _context.Categories.Where(x => x.Status == status)
                     .Where(x => x.Status != Status.Deleted)
+                    .Skip(start).Take(length)
                     .ToListAsync())
                     .Select(c => new Category()
                     {
                         Id = c.Id,
                         Name = c.Name,
                         Status = c.Status,
-                    });
+                    }), recordCount);
+        }
+
+        // filter by status and name
+        private async Task<(IEnumerable<Category>, int)> CategoriesByNameAndStatus(string name, Status status, int start, int length)
+        {
+            var recordCount = await _context.Categories
+                .CountAsync(x => (x.Status != Status.Deleted) &&
+                    (x.Status == status) &&
+                    (x.Name.ToLower().Contains(name.ToLower()))
+                );
+
+            return ((await _context.Categories.Where(x => x.Status == status)
+                    .Where(x => x.Name.ToLower().Contains(name.ToLower()))
+                    .Where(x => x.Status != Status.Deleted)
+                    .Skip(start).Take(length)
+                    .ToListAsync())
+                    .Select(c => new Category()
+                    {
+                        Id = c.Id,
+                        Name = c.Name,
+                        Status = c.Status,
+                    }), recordCount);
         }
 
         // list with paging
@@ -162,45 +196,43 @@ namespace IM.Plugins.EFCore.Repositories
             IEnumerable<Category> listCategories = Enumerable.Empty<Category>();
             bool isFiltered = false;
 
-            // search by category name
-            if (!string.IsNullOrEmpty(searchByName))
+            if (!string.IsNullOrEmpty(searchByName) && filterByStatus != 0)
             {
-                listCategories = await SearchCategoriesByName(searchByName);
+                var listCategoriesTuple = await CategoriesByNameAndStatus(searchByName, filterByStatus, start, length);
+                listCategories = listCategoriesTuple.Item1;
+                filterRecord = listCategoriesTuple.Item2;
+
+                isFiltered = true;
+            }
+
+            // search by category name
+            else if (!string.IsNullOrEmpty(searchByName))
+            {
+                var listCategoriesTuple = await SearchCategoriesByName(searchByName, start, length);
+                listCategories = listCategoriesTuple.Item1;
+                filterRecord = listCategoriesTuple.Item2;
+
                 isFiltered = true;
             }
 
             // filter by status
-            if (filterByStatus != 0)
+            else if (filterByStatus != 0)
             {
-                listCategories = await FilterCategoriesByStatus(filterByStatus);
+                var listCategoriesTuple = await FilterCategoriesByStatus(filterByStatus, start, length);
+                listCategories = listCategoriesTuple.Item1;
+                filterRecord = listCategoriesTuple.Item2;
+
                 isFiltered = true;
             }
 
-            //pagination
             if (!isFiltered)
             {
-                var tuple = await ListCategoriesWithPaginationAsync(start, length);
+                var listCategoriesTuple = await ListCategoriesWithPaginationAsync(start, length);
 
-                listCategories = tuple.Item1;
+                listCategories = listCategoriesTuple.Item1;
 
                 // get total count of records
-                filterRecord = tuple.Item2;
-            }
-            else
-            {
-                // get total count of records after searching, sorting and filtering
-                filterRecord = listCategories.Count();
-
-                listCategories = listCategories.Where(x => x.Status != Status.Deleted)
-                    .OrderByDescending(d => d.CreatedAt)
-                    .Skip(start).Take(length)
-                    .ToList()
-                    .Select(c => new Category()
-                    {
-                        Id = c.Id,
-                        Name = c.Name,
-                        Status = c.Status,
-                    });
+                filterRecord = listCategoriesTuple.Item2;
             }
 
             // Sorting 
