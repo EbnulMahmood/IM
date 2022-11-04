@@ -39,12 +39,35 @@ namespace IM.UseCases.Extensions
 
         public static IEnumerable<CategoryDto> ConvertToDto(this IEnumerable<Category> categories)
         {
+            string ConditionClassStatus(StatusDto statusDto)
+            {
+                return statusDto == StatusDto.Active ? "text-success" : "text-danger";
+            }
+
+            string ConditionTextStatus(StatusDto statusDto)
+            {
+                return statusDto == StatusDto.Active ? "Active" : "Inactive";
+            }
+
+            string ActionLinks(Guid id)
+            {
+                return $"<div class='w-25 btn-group' role='group'>" +
+                    $"<a href='Edit/{id}' class='btn btn-primary mx-2'><i class='bi bi-pencil-square'></i>Edit</a>" +
+                    $"<button type='button' data-bs-target='#deleteCategory' data-bs-toggle='ajax-modal'" +
+                        $"class='btn btn-danger mx-2 btn-category-delete' data-category-id='{id}'>" +
+                        $"<i class='bi bi-trash-fill'></i>Delete</button>" +
+                    $"<a href='Details/{id}' class='btn btn-secondary mx-2'><i class='bi bi-ticket-detailed-fill'>" +
+                        $"</i>Details</a>" +
+                    $"</div>";
+            }
+
             return (from category in categories
                     select new CategoryDto
             {
-                Id = category.Id,
                 Name = category.Name,
-                Status = (StatusDto)category.Status,
+                StatusHtml = $"<span class='{ConditionClassStatus((StatusDto)category.Status)}'>" +
+                             $"{ConditionTextStatus((StatusDto)category.Status)}</span>",
+                ActionLinkHtml = ActionLinks(category.Id),
             }).ToList();
         }
 

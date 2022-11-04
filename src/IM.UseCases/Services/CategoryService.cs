@@ -29,7 +29,7 @@ namespace IM.UseCases.Services
             return errors;
         }
 
-        public async Task<(IEnumerable<CategoryDto>, int, int)> ListCategoriesWithSortingFilteringPagingServiceAsync(int start, int length,
+        public async Task<(List<object>, int, int)> ListCategoriesWithSortingFilteringPagingServiceAsync(int start, int length,
             string order, string orderDir, string searchByName, StatusDto filterByStatusDto = 0)
         {
             try
@@ -37,11 +37,24 @@ namespace IM.UseCases.Services
                 var listCategoriesTuple = await _unitOfWork.CategoryRepository.ListCategoriesWithSortingFilteringPagingAsync(start, length, order, orderDir,
                     searchByName, (Status)filterByStatusDto);
 
-                var listCategoriesDto = listCategoriesTuple.Item1.ConvertToDto();
                 int totalRecord = listCategoriesTuple.Item2;
                 int filterRecord = listCategoriesTuple.Item3;
+                var listCategoriesDto = listCategoriesTuple.Item1.ConvertToDto();
 
-                return (listCategoriesDto, totalRecord, filterRecord);
+                List<object> entitiesList = new List<object>();
+                foreach (var item in listCategoriesDto)
+                {
+                    List<string> dataItems = new List<string>
+                    {
+                        item.Name,
+                        item.StatusHtml,
+                        item.ActionLinkHtml
+                    };
+
+                    entitiesList.Add(dataItems);
+                }
+
+                return (entitiesList, totalRecord, filterRecord);
             }
             catch (Exception)
             {
