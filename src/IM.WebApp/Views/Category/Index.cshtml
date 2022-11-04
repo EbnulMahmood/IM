@@ -9,7 +9,7 @@
 <div class="container">
     <div class="row">
         <div id="modal-placeholder-category"></div>
-        <div class="col-12">
+        <div class="col-md-12">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
@@ -17,10 +17,10 @@
                 </ol>
             </nav>
         </div>
-        <div class="col-6">
+        <div class="col-md-6">
             <h2 class="text-primary">@ViewData["Title"]</h2>
         </div>
-        <div class="col-6 text-end">
+        <div class="col-md-6 text-end">
             <a asp-controller="Category" asp-action="Create" class="btn btn-primary">
                 <i class="bi bi-plus-circle"></i>&nbsp; Create
             </a>
@@ -41,7 +41,7 @@
     
     <div class="table-responsive">
         <table id="categoryDatatable" 
-            class="table pt-1 table-striped table-bordered border-dark">
+            class="table align-middle pt-1 table-striped table-bordered border-dark">
             <thead class="table-dark">
                 <tr>
                     <th class="w-auto">Name</th>
@@ -56,52 +56,31 @@
 @section Scripts {
     <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script src="~/js/datatable.js" asp-append-version="true"></script>
+    <script src="~/js/modal.js" asp-append-version="true"></script>
     
     <script>
-        const filterSearchOptionsForCategory = () => {
-            return {
-                searchByName: "#search-by-name",
-                filterByStatus: "#filter-by-status",
-            }
-        }
-        const categoryDatatableId = '#categoryDatatable';
-        const categoryIndexUrl = 'Category/Index';
 
         $(document).ready(function () {
+            // datatable
+            const filterSearchOptionsForCategory = () => {
+                return {
+                    searchByName: "#search-by-name",
+                    filterByStatus: "#filter-by-status",
+                }
+            }
+            const categoryDatatableId = '#categoryDatatable';
+            const categoryIndexUrl = 'Category/Index';
             
             DataTable(categoryDatatableId, categoryIndexUrl,
                 filterSearchOptionsForCategory);
-        });
-    </script>
 
-    <script>
-        // modal
-        const showModal = (url, PlaceHolderElement) => {
-            const decodeUrl = decodeURIComponent(url);
-            $.get(decodeUrl).done(function (data) {
-                PlaceHolderElement.html(data);
-                PlaceHolderElement.find('.modal').modal('show');
-            })
-        }
-        const modalAction = (PlaceHolderElement, that) => {
-            const form = that.parents('.modal').find('form');
-            const actionUrl = form.attr('action');
-            const sendData = form.serialize();
-            $.post(actionUrl, sendData).done(function (data) {
-                PlaceHolderElement.find('.modal').modal('hide');
-                window.location.reload();
-            })
-        }
-        $(function () {
-            const PlaceHolderElementDev = $('#modal-placeholder-category');
-            $(document).on("click", ".btn-category-delete", function () {
-                const id = $(this).attr('data-category-id');
-                const url = `Delete/${id}`;
-                showModal(url, PlaceHolderElementDev);
-            });
-            PlaceHolderElementDev.on('click', '[data-bs-save="modal"]', function (e) {
-                modalAction(PlaceHolderElementDev, $(this))
-            })
-        })
+            // modal
+            const url = 'Category/Delete';
+            const idElement = 'data-category-id';
+            const placeHolderId = '#modal-placeholder-category';
+            const btnDeleteClass = '.btn-category-delete';
+
+            Modal(url, idElement, placeHolderId, btnDeleteClass);
+        });
     </script>
 }

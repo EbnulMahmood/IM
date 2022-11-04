@@ -46,49 +46,6 @@ namespace IM.WebApp.Controllers
             });
         }
 
-        private IEnumerable<CategoryDto> SortByColumnWithOrder(string order, string orderDir, IEnumerable<CategoryDto> data)
-        {
-            // Initialization.   
-            IEnumerable<CategoryDto> sortedEntities = Enumerable.Empty<CategoryDto>();
-            try
-            {
-                // Sorting   
-                switch (order)
-                {
-                    case "0":
-                        // Setting.   
-                        sortedEntities = orderDir.Equals("DESC", StringComparison.CurrentCultureIgnoreCase) ?
-                            data.OrderByDescending(p => p.Name).ToList() : data.OrderBy(p => p.Name).ToList();
-                        break;
-                    case "1":
-                        // Setting.   
-                        sortedEntities = orderDir.Equals("DESC", StringComparison.CurrentCultureIgnoreCase) ?
-                            data.OrderByDescending(p => p.Description).ToList() :
-                            data.OrderBy(p => p.Description).ToList();
-                        break;
-                    case "2":
-                        // Setting.   
-                        sortedEntities = orderDir.Equals("DESC", StringComparison.CurrentCultureIgnoreCase) ? 
-                            data.OrderByDescending(p => p.Status).ToList() : 
-                            data.OrderBy(p => p.Status).ToList();
-                        break;
-                    default:
-                        // Setting.   
-                        sortedEntities = orderDir.Equals("DESC", StringComparison.CurrentCultureIgnoreCase) ? 
-                            data.OrderByDescending(p => p.Name).ToList() : 
-                            data.OrderBy(p => p.Name).ToList();
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                // info.   
-                Console.Write(ex);
-            }
-            // info.   
-            return sortedEntities;
-        }
-
         public IActionResult Create()
         {
             return View();
@@ -127,12 +84,12 @@ namespace IM.WebApp.Controllers
 
         public async Task<IActionResult> Delete(Guid id)
         {
-            string devDeletePartial = "_CategoryDeletePartial";
+            string categoryDeletePartial = "_CategoryDeletePartial";
 
             var entityDto = await _service.GetCategoryByIdServiceAsync(id);
             if (entityDto == null) return NotFound();
 
-            return PartialView(devDeletePartial, entityDto);
+            return PartialView(categoryDeletePartial, entityDto);
         }
 
         [HttpPost, ActionName("Delete")]
