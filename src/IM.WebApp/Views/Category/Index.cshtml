@@ -6,8 +6,8 @@
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
 
-<div class="container p-3">
-    <div class="row pt-4">
+<div class="container">
+    <div class="row">
         <div id="modal-placeholder-category"></div>
         <div class="col-12">
             <nav aria-label="breadcrumb">
@@ -26,13 +26,11 @@
             </a>
         </div>
     </div>
-    <br>
-    <br>
     <div class="row">
-        <div class="col-md-3 p-3">
+        <div class="col-md-3 p-2">
             <input class="form-control" type="text" id="search-by-name" placeholder="Search Name" />
         </div>
-        <div class="col-md-3 p-3">
+        <div class="col-md-3 p-2">
             <select class="form-control" id="filter-by-status">
                 <option selected value="">Select Status</option>
                 <option value="@StatusDto.Active">Active</option>
@@ -40,12 +38,13 @@
             </select>
         </div>
     </div>
-    <br>
+    
     <div class="table-responsive">
-        <table id="categoryDatatable" class="table table-striped">
-            <thead>
+        <table id="categoryDatatable" 
+            class="table pt-1 table-striped table-bordered border-dark">
+            <thead class="table-dark">
                 <tr>
-                    <th class="w-50">Name</th>
+                    <th class="w-auto">Name</th>
                     <th class="w-25">Status</th>
                     <th class="w-25">Action</th>
                 </tr>
