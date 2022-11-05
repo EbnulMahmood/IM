@@ -20,6 +20,7 @@ builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
 // Add Services
 builder.Services.AddTransient<ICategoryService, CategoryService>();
+builder.Services.AddTransient<IProductService, ProductService>();
 
 var app = builder.Build();
 

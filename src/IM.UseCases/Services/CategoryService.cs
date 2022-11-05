@@ -104,7 +104,7 @@ namespace IM.UseCases.Services
                 var entity = entityDtoToUpdate.ConvertToEntity();
 
                 entity.ModifiedAt = DateTime.Now;
-                entity.ModifiedBy = Guid.NewGuid();
+                entity.ModifiedBy = 4;
 
                 if (!_unitOfWork.CategoryRepository.UpdateEntity(entity)) throw new Exception();
 

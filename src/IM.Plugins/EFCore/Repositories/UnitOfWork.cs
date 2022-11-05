@@ -11,6 +11,7 @@ namespace IM.Plugins.EFCore.Repositories
         private readonly ILogger _logger;
 
         public ICategoryRepository CategoryRepository { get; private set; }
+        public IProductRepository ProductRepository { get; private set; }
 
         public UnitOfWork(InventoryDbContext context, ILoggerFactory loggerFactory)
         {
@@ -18,6 +19,7 @@ namespace IM.Plugins.EFCore.Repositories
             _logger = loggerFactory.CreateLogger("logs");
 
             CategoryRepository = new CategoryRepository(context, _logger);
+            ProductRepository = new ProductRepository(context, _logger);
         }
 
         public async Task<bool> SaveAsync()

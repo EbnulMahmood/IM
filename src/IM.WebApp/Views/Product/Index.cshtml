@@ -1,0 +1,87 @@
+@using IM.UseCases.Dtos.Enums
+@model IEnumerable<ProductDto>
+@{
+    ViewData["Title"] = "Products";
+}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+
+<div class="container">
+    <div class="row">
+        <div id="modal-placeholder-product"></div>
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Product</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-6">
+            <h2 class="text-primary">@ViewData["Title"]</h2>
+        </div>
+        <div class="col-md-6 text-end">
+            <a asp-controller="Product" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i>&nbsp; Create
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 p-2">
+            <input class="form-control" type="text" id="search-by-name" placeholder="Search Name" />
+        </div>
+        <div class="col-md-3 p-2">
+            <select class="form-control" id="filter-by-status">
+                <option selected value="">Select Status</option>
+                <option value="@StatusDto.Active">Active</option>
+                <option value="@StatusDto.Inactive">Inactive</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="table-responsive">
+        <table id="productDatatable" 
+            class="table align-middle pt-1 table-striped table-bordered border-dark">
+            <thead class="table-dark">
+                <tr>
+                    <th class="w-auto">Name</th>
+                    <th class="w-auto">Category</th>
+                    <th class="w-25">Status</th>
+                    <th class="w-25">Action</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="~/js/datatable.js" asp-append-version="true"></script>
+    <script src="~/js/modal.js" asp-append-version="true"></script>
+    
+    <script>
+
+        $(document).ready(function () {
+            // datatable
+            const filterSearchOptionsForProduct = () => {
+                return {
+                    searchByName: "#search-by-name",
+                    filterByStatus: "#filter-by-status",
+                }
+            }
+            const productDatatableId = '#productDatatable';
+            const productIndexUrl = 'Product/Index';
+            
+            DataTable(productDatatableId, productIndexUrl,
+                filterSearchOptionsForProduct);
+
+            // modal
+            const url = 'Product/Delete';
+            const idElement = 'data-product-id';
+            const placeHolderId = '#modal-placeholder-product';
+            const btnDeleteClass = '.btn-product-delete';
+
+            Modal(url, idElement, placeHolderId, btnDeleteClass);
+        });
+    </script>
+}

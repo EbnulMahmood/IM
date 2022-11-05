@@ -37,30 +37,30 @@ namespace IM.UseCases.Extensions
             };
         }
 
+        private static string ConditionClassStatus(StatusDto statusDto)
+        {
+            return statusDto == StatusDto.Active ? "success" : "warning";
+        }
+
+        private static string ConditionTextStatus(StatusDto statusDto)
+        {
+            return statusDto == StatusDto.Active ? "Active" : "Inactive";
+        }
+
+        private static string ActionLinks(long id)
+        {
+            return $"<div class='btn-group' role='group'>" +
+                        $"<a href='Edit/{id}' class='btn btn-primary mx-1'><i class='bi bi-pencil-square'></i>Edit</a>" +
+                        $"<button type='button' data-bs-target='#deleteCategory' data-bs-toggle='ajax-modal'" +
+                            $"class='btn btn-danger mx-1 btn-category-delete' data-category-id='{id}'>" +
+                            $"<i class='bi bi-trash-fill'></i>Delete</button>" +
+                        $"<a href='Details/{id}' class='btn btn-info mx-1'><i class='bi bi-ticket-detailed-fill'>" +
+                            $"</i>Details</a>" +
+                    $"</div>";
+        }
+
         public static IEnumerable<CategoryDto> ConvertToDto(this IEnumerable<Category> categories)
         {
-            string ConditionClassStatus(StatusDto statusDto)
-            {
-                return statusDto == StatusDto.Active ? "success" : "warning";
-            }
-
-            string ConditionTextStatus(StatusDto statusDto)
-            {
-                return statusDto == StatusDto.Active ? "Active" : "Inactive";
-            }
-
-            string ActionLinks(Guid id)
-            {
-                return $"<div class='btn-group' role='group'>" +
-                            $"<a href='Edit/{id}' class='btn btn-primary mx-1'><i class='bi bi-pencil-square'></i>Edit</a>" +
-                            $"<button type='button' data-bs-target='#deleteCategory' data-bs-toggle='ajax-modal'" +
-                                $"class='btn btn-danger mx-1 btn-category-delete' data-category-id='{id}'>" +
-                                $"<i class='bi bi-trash-fill'></i>Delete</button>" +
-                            $"<a href='Details/{id}' class='btn btn-info mx-1'><i class='bi bi-ticket-detailed-fill'>" +
-                                $"</i>Details</a>" +
-                        $"</div>";
-            }
-
             return (from category in categories
                     select new CategoryDto
             {
@@ -79,6 +79,19 @@ namespace IM.UseCases.Extensions
         public static Category ConvertToEntity(this CategoryDto categoryDto)
         {
             return NewCategory(categoryDto);
+        }
+
+        public static IEnumerable<ProductDto> ConvertToDto(this IEnumerable<Product> products)
+        {
+            return (from product in products
+                    select new ProductDto
+            {
+                Name = product.Name,
+                CategoryName = "product.Category.Name",
+                StatusHtml = $"<span class='badge alert-{ConditionClassStatus((StatusDto)product.Status)}'>" +
+                             $"{ConditionTextStatus((StatusDto)product.Status)}</span>",
+                ActionLinkHtml = ActionLinks(product.Id),
+            }).ToList();
         }
     }
 }
