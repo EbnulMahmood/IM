@@ -94,14 +94,8 @@ namespace IM.Plugins.EFCore.Repositories
                     on product.CategoryId equals category.Id
                     where product.Status != Status.Deleted
                     orderby product.CreatedAt descending
-                    select new Product()
-                    {
-                        Id = product.Id,
-                        Name = product.Name,
-                        Status = product.Status,
-                        CategoryId = category.Id,
-                        Category = category,
-                    }).Skip(start).Take(length)
+                    select product)
+                    .Skip(start).Take(length)
                     .ToListAsync(), recordCount);
 
             // return ((await _context.Products

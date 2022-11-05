@@ -27,11 +27,10 @@ namespace IM.UseCases.Services
                 int filterRecord = listProductsTuple.Item3;
                 var listProductsDto = listProductsTuple.Item1.ConvertToDto();
 
-                // foreach (var item in listProductsTuple.Item1)
-                // {
-                //     Console.WriteLine(item.CategoryId);
-                //     Console.WriteLine(item.Category?.Name);
-                // }
+                foreach (var item in listProductsTuple.Item1)
+                {
+                    Console.WriteLine(item.CategoryId);
+                }
 
                 List<object> entitiesList = new List<object>();
                 foreach (var item in listProductsDto)
