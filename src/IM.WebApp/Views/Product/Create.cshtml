@@ -1,0 +1,76 @@
+@using IM.UseCases.Dtos.Enums
+@model ProductDto
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="Product" asp-action="Index">Product</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Create</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-12">
+            <h2 class="text-primary">@ViewData["Title"]</h2>
+        </div>
+        <div class="col-md-12">
+            <form method="post">
+                <fieldset>
+                    <div class="form-group">
+                        <label asp-for="Name" class="form-label mt-4"></label>
+                        <input asp-for="Name" class="form-control">
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="form-label mt-4"></label>
+                        <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label mt-4">Category</label>
+                        <select id="selectCategory" class="form-select"></select>
+                    </div>
+                    <div class="form-group pt-4">
+                        <button type="submit" class="btn btn-primary">Create</button>
+                        <a asp-controller="Product" asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+
+    <script>
+        $(document).ready(function () {
+            $('#selectCategory').select2({
+                placeholder: '--Select Category--',
+                ajax: {
+                    type: "GET",
+                    dataType: 'json',
+                    url: '/Product/CategoriesDropdown',
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    text: item.name,
+                                    id: item.id,
+                                }
+                            })
+                        }
+                    }
+                    // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+                }
+            });
+        })
+
+    </script>
+}

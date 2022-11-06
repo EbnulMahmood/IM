@@ -1,3 +1,4 @@
+using System.Linq;
 using IM.CoreBusiness.Entities;
 using IM.CoreBusiness.Enums;
 using IM.Plugins.EFCore.Data;
@@ -17,6 +18,25 @@ namespace IM.Plugins.EFCore.Repositories
         {
             _context = context;
             _logger = logger;
+        }
+
+        public async Task<IEnumerable<Category>> ListCategoriesAsync(string name)
+        {
+                Console.WriteLine("search key -> ", name);
+            if (!string.IsNullOrEmpty(name))
+            {
+                Console.WriteLine("search key -> ", name);
+                return await _context.Categories
+                    .Where(x => x.Name.ToLower().Contains(name.ToLower()))
+                    .ToListAsync();
+
+            }
+            else 
+            {
+                Console.WriteLine("outside....");
+                return await _context.Categories
+                    .ToListAsync();
+            }
         }
 
         // search by name

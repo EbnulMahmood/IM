@@ -93,5 +93,16 @@ namespace IM.UseCases.Extensions
                 ActionLinkHtml = ActionLinks(product.Id),
             }).ToList();
         }
+
+        public static Product ConvertToEntity(this ProductDto productDto)
+        {
+            return new Product()
+            {
+                Id = productDto.Id,
+                Name = productDto.Name,
+                Description = productDto.Description,
+                CategoryId = productDto.CategoryId,
+            };
+        }
     }
 }

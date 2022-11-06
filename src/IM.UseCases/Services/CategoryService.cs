@@ -29,6 +29,27 @@ namespace IM.UseCases.Services
             return errors;
         }
 
+        public async Task<IEnumerable<CategoryDto>> ListCategoriesServiceAsync(string name)
+        {
+            try
+            {
+                var entities = await _unitOfWork.CategoryRepository.ListCategoriesAsync(name);
+                
+                var entitiesDto = from category in entities select
+                new CategoryDto
+                {
+                    Name = category.Name,
+                };
+
+                return entitiesDto;
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
+            }
+        }
+
         public async Task<(List<object>, int, int)> ListCategoriesWithSortingFilteringPagingServiceAsync(int start, int length,
             string order, string orderDir, string searchByName, StatusDto filterByStatusDto = 0)
         {

@@ -1,3 +1,4 @@
+using IM.UseCases.Dtos;
 using IM.UseCases.Dtos.Enums;
 using IM.UseCases.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
@@ -8,12 +9,15 @@ namespace IM.WebApp.Controllers
     {
         private readonly ILogger<ProductController> _logger;
         private readonly IProductService _service;
+        private readonly ICategoryService _categoryService;
 
         public ProductController(ILogger<ProductController> logger,
-            IProductService service)
+            IProductService service,
+            ICategoryService categoryService)
         {
             _logger = logger;
             _service = service;
+            _categoryService = categoryService;
         }
 
         public IActionResult Index()
@@ -43,6 +47,34 @@ namespace IM.WebApp.Controllers
                 recordsFiltered = filterRecord,
                 data = listProducts
             });
+        }
+
+        [HttpGet, ActionName("CategoriesDropdown")]
+        public async Task<JsonResult> ListCategoriesDropdownAsync(string term)
+        {
+            Console.WriteLine("controller search key -> ", term);
+            var entities = await _service.ListCategoriesSearch(term);
+
+            return new JsonResult(entities);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(ProductDto entityDto)
+        {
+            // IDictionary<string, string> errors = _service.ValidateProductDtoService(entityDto);
+            // if (errors.Count > 0) ModelState.Merge(errors);
+
+            if (!ModelState.IsValid) return View(entityDto);
+            _service.ValidateProductDtoService(entityDto);
+            if (!await _service.CreateProductServiceAsync(entityDto)) return View(entityDto);
+            TempData["success"] = "Product created successfully!";
+            return RedirectToAction(nameof(Index));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
