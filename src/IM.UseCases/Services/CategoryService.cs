@@ -50,7 +50,7 @@ namespace IM.UseCases.Services
             }
         }
 
-        public async Task<(List<object>, int, int)> ListCategoriesWithSortingFilteringPagingServiceAsync(int start, int length,
+        public async Task<(List<CategoryViewDto>, int, int)> ListCategoriesWithSortingFilteringPagingServiceAsync(int start, int length,
             string order, string orderDir, string searchByName, StatusDto filterByStatusDto = 0)
         {
             try
@@ -60,22 +60,24 @@ namespace IM.UseCases.Services
 
                 int totalRecord = listCategoriesTuple.Item2;
                 int filterRecord = listCategoriesTuple.Item3;
-                var listCategoriesDto = listCategoriesTuple.Item1.ConvertToDto();
+                // var listCategoriesDto = listCategoriesTuple.Item1.ConvertToDto();
+                var listCategoriesDto = listCategoriesTuple.Item1.ConvertToObject();
 
-                List<object> entitiesList = new List<object>();
-                foreach (var item in listCategoriesDto)
-                {
-                    List<string> dataItems = new List<string>
-                    {
-                        item.Name,
-                        item.StatusHtml,
-                        item.ActionLinkHtml
-                    };
+                // List<object> entitiesList = new List<object>();
+                // foreach (var item in listCategoriesDto)
+                // {
+                //     List<string> dataItems = new List<string>
+                //     {
+                //         item.Name,
+                //         item.StatusHtml,
+                //         item.ActionLinkHtml
+                //     };
 
-                    entitiesList.Add(dataItems);
-                }
+                //     entitiesList.Add(dataItems);
+                // }
 
-                return (entitiesList, totalRecord, filterRecord);
+                // return (entitiesList, totalRecord, filterRecord);
+                return (listCategoriesDto, totalRecord, filterRecord);
             }
             catch (Exception)
             {

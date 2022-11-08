@@ -38,7 +38,7 @@ namespace IM.WebApp.Controllers
 
             int totalRecord = listProductsTuple.Item2;
             int filterRecord = listProductsTuple.Item3;
-            List<object> listProducts = listProductsTuple.Item1;
+            List<ProductViewDto> listProducts = listProductsTuple.Item1;
 
             return Json(new
             {
@@ -52,7 +52,6 @@ namespace IM.WebApp.Controllers
         [HttpGet, ActionName("CategoriesDropdown")]
         public async Task<JsonResult> ListCategoriesDropdownAsync(string term)
         {
-            Console.WriteLine("controller search key -> ", term);
             var entities = await _service.ListCategoriesSearch(term);
 
             return new JsonResult(entities);

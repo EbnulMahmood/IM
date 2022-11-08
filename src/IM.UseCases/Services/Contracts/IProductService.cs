@@ -5,7 +5,7 @@ namespace IM.UseCases.Services.Contracts
 {
     public interface IProductService
     {
-        Task<(List<object>, int, int)> ListProductsWithSortingFilteringPagingServiceAsync(int start,
+        Task<(List<ProductViewDto>, int, int)> ListProductsWithSortingFilteringPagingServiceAsync(int start,
             int length, string order, string orderDir, string searchByName,
             StatusDto filterByStatusDto = 0);
         IDictionary<string, string> ValidateProductDtoService(ProductDto entityDto);

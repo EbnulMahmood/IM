@@ -1,5 +1,5 @@
 // DataTable
-const DataTable = (tableId, url, options) => {
+const DataTable = (tableId, url, options, columns) => {
 
     const configFilterSearchOptions = () => {
         const configOption = {};
@@ -23,6 +23,7 @@ const DataTable = (tableId, url, options) => {
         serverSide: true,
         sort: true,
         searching: false,
+        columns: columns,
         columnDefs: [
             { orderable: false, targets: -1 }
         ],

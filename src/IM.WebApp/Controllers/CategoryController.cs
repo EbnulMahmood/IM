@@ -35,7 +35,7 @@ namespace IM.WebApp.Controllers
 
             int totalRecord = listCategoriesTuple.Item2;
             int filterRecord = listCategoriesTuple.Item3;
-            List<object> listCategories = listCategoriesTuple.Item1;
+            List<CategoryViewDto> listCategories = listCategoriesTuple.Item1;
 
             return Json(new
             {

@@ -1,3 +1,4 @@
+using System;
 using IM.CoreBusiness.Entities;
 using IM.CoreBusiness.Enums;
 using IM.UseCases.Dtos;
@@ -71,6 +72,18 @@ namespace IM.UseCases.Extensions
             }).ToList();
         }
 
+        public static List<CategoryViewDto> ConvertToObject(this IEnumerable<Category> categories)
+        {
+            List<CategoryViewDto> categoriesOnject = (from product in categories
+                                select new CategoryViewDto{
+                                    Name = product.Name,
+                                    StatusHtml = $"<span class='badge alert-{ConditionClassStatus((StatusDto)product.Status)}'>" +
+                                                $"{ConditionTextStatus((StatusDto)product.Status)}</span>",
+                                    ActionLinkHtml = ActionLinks(product.Id),
+                                }).ToList();
+            return categoriesOnject;
+        }
+
         public static CategoryDto ConvertToDto(this Category category)
         {
             return NewCategoryDto(category);
@@ -79,6 +92,19 @@ namespace IM.UseCases.Extensions
         public static Category ConvertToEntity(this CategoryDto categoryDto)
         {
             return NewCategory(categoryDto);
+        }
+
+        public static List<ProductViewDto> ConvertToObject(this IEnumerable<Product> products)
+        {
+            List<ProductViewDto> productsOnject = (from product in products
+                                select new ProductViewDto{
+                                    Name = product.Name,
+                                    CategoryName = "Category Name",
+                                    StatusHtml = $"<span class='badge alert-{ConditionClassStatus((StatusDto)product.Status)}'>" +
+                                                $"{ConditionTextStatus((StatusDto)product.Status)}</span>",
+                                    ActionLinkHtml = ActionLinks(product.Id),
+                                }).ToList();
+            return productsOnject;
         }
 
         public static IEnumerable<ProductDto> ConvertToDto(this IEnumerable<Product> products)
