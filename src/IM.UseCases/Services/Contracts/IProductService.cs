@@ -11,5 +11,7 @@ namespace IM.UseCases.Services.Contracts
         IDictionary<string, string> ValidateProductDtoService(ProductDto entityDto);
         Task<bool> CreateProductServiceAsync(ProductDto entityDtoToCreate);
         Task<List<CategoryDto>> ListCategoriesSearch(string name);
+        Task<object> ListCategoriesServiceAsync(string name, int page
+            , int resultCount);
     }
 }

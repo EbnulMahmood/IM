@@ -16,6 +16,36 @@ namespace IM.UseCases.Services
             _unitOfWork = unitOfWork;
         }
 
+        public async Task<object> ListCategoriesServiceAsync(string name, int page
+            , int resultCount)
+        {
+            var entitiesTupe = await _unitOfWork.ProductRepository
+                                    .ListCategoriesAsync(name, page, resultCount);
+            
+            var entitiesDto = (from c in entitiesTupe.Item1
+                                select new CategorySearchDto(){
+                                    Id = c.Id,
+                                    Name = c.Name,
+                                }).ToArray();
+            bool morePages = entitiesTupe.Item2;
+
+            var resultsDict = new Dictionary<string, object>();
+            resultsDict.Add("results", entitiesDto);
+
+            var paginationDict = new Dictionary<string, Dictionary<string, bool>>();
+            var moreDict = new Dictionary<string, bool>();
+            moreDict.Add("more", morePages);
+            paginationDict.Add("pagination", moreDict);
+
+            var results = Newtonsoft.Json.JsonConvert.SerializeObject(entitiesDto);
+            var pagination = Newtonsoft.Json.JsonConvert.SerializeObject(paginationDict);
+
+            return new {
+                results,
+                pagination,
+            };
+        }
+
         public async Task<List<CategoryDto>> ListCategoriesSearch(string name)
         {
             try

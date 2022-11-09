@@ -50,9 +50,10 @@ namespace IM.WebApp.Controllers
         }
 
         [HttpGet, ActionName("CategoriesDropdown")]
-        public async Task<JsonResult> ListCategoriesDropdownAsync(string term)
+        public async Task<JsonResult> ListCategoriesDropdownAsync(string term, int page)
         {
-            var entities = await _service.ListCategoriesSearch(term);
+            int resultCount = 5;
+            var entities = await _service.ListCategoriesServiceAsync(term, page, resultCount);
 
             return new JsonResult(entities);
         }

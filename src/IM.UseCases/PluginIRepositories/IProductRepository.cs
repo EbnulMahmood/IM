@@ -8,5 +8,7 @@ namespace IM.UseCases.PluginIRepositories
         Task<(IEnumerable<Product>, int, int)> ListProductsWithSortingFilteringPagingAsync(int start, 
             int length, string order, string orderDir, string searchByName,
             Status filterByStatus = 0);
+        Task<(IEnumerable<Category>, bool)> ListCategoriesAsync(string name, int page
+            , int resultCount);
     }
 }

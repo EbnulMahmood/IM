@@ -18,6 +18,31 @@ namespace IM.Plugins.EFCore.Repositories
             _logger = logger;
         }
 
+        public async Task<(IEnumerable<Category>, bool)> ListCategoriesAsync(string name, int page
+            , int resultCount)
+        {
+            int offset = (page - 1) * resultCount;
+
+            int entitiesCount = await _context.Categories.Where(x => 
+                                    (string.IsNullOrEmpty(name) || 
+                                    x.Name.ToLower().Contains(name.ToLower())))
+                                .CountAsync();
+
+            var entities = await _context.Categories
+                            .Skip(offset)
+                            .Take(resultCount)
+                            .Select(x => new Category(){
+                                Id = x.Id,
+                                Name = x.Name,
+                            })
+                            .ToListAsync();
+            
+            int endCount = offset + resultCount;
+            bool morePages = endCount > entitiesCount;
+
+            return (entities, morePages);
+        }
+
         // search by name
         private async Task<(IEnumerable<Product>, int)> SearchProductsByName(string name, int start, int length)
         {

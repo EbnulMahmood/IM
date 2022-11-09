@@ -51,11 +51,11 @@ namespace IM.UseCases.Extensions
         private static string ActionLinks(long id)
         {
             return $"<div class='btn-group' role='group'>" +
-                        $"<a href='Edit/{id}' class='btn btn-primary mx-1'><i class='bi bi-pencil-square'></i>Edit</a>" +
+                        $"<a href='Edit/{id}' class='btn btn-default mx-1'><i class='bi bi-pencil-square'></i>Edit</a>" +
                         $"<button type='button' data-bs-target='#deleteCategory' data-bs-toggle='ajax-modal'" +
-                            $"class='btn btn-danger mx-1 btn-category-delete' data-category-id='{id}'>" +
+                            $"class='btn btn-default mx-1 btn-category-delete' data-category-id='{id}'>" +
                             $"<i class='bi bi-trash-fill'></i>Delete</button>" +
-                        $"<a href='Details/{id}' class='btn btn-info mx-1'><i class='bi bi-ticket-detailed-fill'>" +
+                        $"<a href='Details/{id}' class='btn btn-default mx-1'>" +
                             $"</i>Details</a>" +
                     $"</div>";
         }
