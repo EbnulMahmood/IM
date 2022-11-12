@@ -16,19 +16,6 @@ namespace IM.UseCases.Services
             _unitOfWork = unitOfWork;
         }
 
-        public IDictionary<string, string> ValidateCategoryDtoService(CategoryDto entityDto)
-        {
-            Guard.AgainstNullParameter(entityDto, nameof(entityDto));
-
-            Dictionary<string, string> errors = new Dictionary<string, string>();
-
-            if (entityDto.Name.Trim().Length == 0)
-                errors.Add("Name", "Name is required.");
-            if (entityDto.Description?.Trim().Length == 0)
-                errors.Add("Description", "Description is required.");
-            return errors;
-        }
-
         public async Task<IEnumerable<CategoryDto>> ListCategoriesServiceAsync(string name)
         {
             try

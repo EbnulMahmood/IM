@@ -5,7 +5,6 @@ namespace IM.UseCases.Services.Contracts
 {
     public interface ICategoryService
     {
-        IDictionary<string, string> ValidateCategoryDtoService(CategoryDto entityDto);
         Task<IEnumerable<CategoryDto>> ListCategoriesServiceAsync(string name);
         Task<(List<CategoryViewDto>, int, int)> ListCategoriesWithSortingFilteringPagingServiceAsync(int start, int length,
             string order, string orderDir, string searchByName, StatusDto filterByStatusDto = 0);

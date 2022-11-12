@@ -67,11 +67,7 @@ namespace IM.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductDto entityDto)
         {
-            // IDictionary<string, string> errors = _service.ValidateProductDtoService(entityDto);
-            // if (errors.Count > 0) ModelState.Merge(errors);
-
             if (!ModelState.IsValid) return View(entityDto);
-            _service.ValidateProductDtoService(entityDto);
             if (!await _service.CreateProductServiceAsync(entityDto)) return View(entityDto);
             TempData["success"] = "Product created successfully!";
             return RedirectToAction(nameof(Index));
