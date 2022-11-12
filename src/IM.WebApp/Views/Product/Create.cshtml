@@ -35,6 +35,7 @@
                         <label class="form-label mt-4">Category</label>
                         <select id="selectCategory" class="form-select"></select>
                     </div>
+                    <select class="js-data-example-ajax form-select" ></select>
                     <div class="form-group pt-4">
                         <button type="submit" class="btn btn-primary">Create</button>
                         <a asp-controller="Product" asp-action="Index" class="btn btn-secondary">Back to List</a>
@@ -51,6 +52,14 @@
 
     <script>
         $(document).ready(function () {
+            $('.js-data-example-ajax').select2({
+                ajax: {
+                    url: '/Product/CategoriesDropdown',
+                    dataType: 'json'
+                },
+            });
+
+
             $('#selectCategory').select2({
                 placeholder: '--Select Category--',
                 width: '350px',
@@ -66,7 +75,17 @@
                         }
                     },
                     cache: true
-                }
+                },
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.Text,
+                                id: item.Id,
+                            }
+                        })
+                    }
+                },
             });
         })
 

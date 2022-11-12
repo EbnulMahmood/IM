@@ -18,6 +18,17 @@ namespace IM.Plugins.EFCore.Repositories
             _logger = logger;
         }
 
+        public async Task<IEnumerable<Category>> ListCategoriesAsync()
+        {
+            var entities = await _context.Categories
+                                .Select(x => new Category() 
+                                {
+                                    Id = x.Id,
+                                    Name = x.Name,
+                                }).ToListAsync();
+            return entities;
+        }
+
         public async Task<(IEnumerable<Category>, bool)> ListCategoriesAsync(string name, int page
             , int resultCount)
         {
@@ -38,7 +49,7 @@ namespace IM.Plugins.EFCore.Repositories
                             .ToListAsync();
             
             int endCount = offset + resultCount;
-            bool morePages = endCount > entitiesCount;
+            bool morePages = endCount < entitiesCount;
 
             return (entities, morePages);
         }

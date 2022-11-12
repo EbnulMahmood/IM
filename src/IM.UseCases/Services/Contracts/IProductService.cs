@@ -12,5 +12,6 @@ namespace IM.UseCases.Services.Contracts
         Task<List<CategoryDto>> ListCategoriesSearch(string name);
         Task<object> ListCategoriesServiceAsync(string name, int page
             , int resultCount);
+        Task<IEnumerable<CategoryDto>> ListCategoriesServiceAsync();
     }
 }

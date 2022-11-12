@@ -16,29 +16,39 @@ namespace IM.UseCases.Services
             _unitOfWork = unitOfWork;
         }
 
+        public async Task<IEnumerable<CategoryDto>> ListCategoriesServiceAsync()
+        {
+            try
+            {
+                var entities = await _unitOfWork.ProductRepository.ListCategoriesAsync();
+                return (from x in entities
+                        select new CategoryDto()
+                        {
+                            Id = x.Id,
+                            Name = x.Name,
+                        }).ToList();
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
+            }
+        }
+
         public async Task<object> ListCategoriesServiceAsync(string name, int page
             , int resultCount)
         {
             var entitiesTupe = await _unitOfWork.ProductRepository
                                     .ListCategoriesAsync(name, page, resultCount);
             
-            var entitiesDto = (from c in entitiesTupe.Item1
+            var results = (from c in entitiesTupe.Item1
                                 select new CategorySearchDto(){
                                     Id = c.Id,
-                                    Name = c.Name,
+                                    Text = c.Name,
                                 }).ToArray();
-            bool morePages = entitiesTupe.Item2;
 
-            var resultsDict = new Dictionary<string, object>();
-            resultsDict.Add("results", entitiesDto);
-
-            var paginationDict = new Dictionary<string, Dictionary<string, bool>>();
-            var moreDict = new Dictionary<string, bool>();
-            moreDict.Add("more", morePages);
-            paginationDict.Add("pagination", moreDict);
-
-            var results = Newtonsoft.Json.JsonConvert.SerializeObject(entitiesDto);
-            var pagination = Newtonsoft.Json.JsonConvert.SerializeObject(paginationDict);
+            bool more = entitiesTupe.Item2;
+            var pagination = new {more = more};
 
             return new {
                 results,

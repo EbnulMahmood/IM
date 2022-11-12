@@ -10,5 +10,6 @@ namespace IM.UseCases.PluginIRepositories
             Status filterByStatus = 0);
         Task<(IEnumerable<Category>, bool)> ListCategoriesAsync(string name, int page
             , int resultCount);
+        Task<IEnumerable<Category>> ListCategoriesAsync();
     }
 }
